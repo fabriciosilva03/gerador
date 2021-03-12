@@ -1,9 +1,16 @@
 import { StatusBar } from 'expo-status-bar';
-import React from 'react';
-import { StyleSheet, Text, View, Image } from 'react-native';
+import React, {useState} from 'react';
+import { StyleSheet, Text, View, Image, TouchableOpacity } from 'react-native';
 import Slider from '@react-native-community/slider';
 
 export default function App() {
+  const [password, setPassword] = useState(''); 
+  const [size, setSize]= useState(10);
+
+  function generatePass(){
+    alert(size)
+  }
+  
   return (
     <View style={styles.container}>
       <Image 
@@ -20,9 +27,19 @@ export default function App() {
           maximumValue={15}
           minimumTrackTintColor="#FF0000"
           maximumTrackTintColor="#000"
-
+          value={size}
+          onValueChange={(valor) => setSize(valor)}
         />
       </View>
+
+      <TouchableOpacity style={styles.button} onPress={generatePass}>
+        <Text style={styles.TextButtom}>GERAR SENHA</Text>
+      </TouchableOpacity>
+
+      <View style={styles.area}>
+        <Text style={styles.password}> {password} </Text>
+      </View>
+
      
     </View>
   );
@@ -36,16 +53,38 @@ const styles = StyleSheet.create({
     backgroundColor: '#F3F3FF'
   },
   logo:{
-    marginBottom: 60,
+    marginBottom: 25,
   },
   title:{
-    color:'#0000FF'
+    color:'#000',
+    fontSize:30,
+    fontWeight: 'bold'
   },
   area:{
     marginTop: 15,
     marginBottom: 15,
     backgroundColor: '#FFF',
-    width: '90%',
-    borderRadius: 7
+    width: '80%',
+    borderRadius: 7,
+
   },
+  button:{
+    backgroundColor: '#ffa200',
+    borderRadius: 10,
+    width: '80%',
+    height: '10%',
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginBottom: 25,
+  },
+  TextButtom:{
+    color:'#FFF',
+    fontSize:15,
+    fontWeight: 'bold'
+  },
+  password:{
+    fontSize: 20,
+    color: '#000',
+    textAlign: 'center',
+  }
 });

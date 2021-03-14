@@ -1,14 +1,30 @@
 import { StatusBar } from 'expo-status-bar';
 import React, {useState} from 'react';
 import { StyleSheet, Text, View, Image, TouchableOpacity } from 'react-native';
+
 import Slider from '@react-native-community/slider';
+import Clipboard from 'expo-clipboard';
+
+import Icon from 'react-native-vector-icons/FontAwesome';
+
+let charset = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
 
 export default function App() {
   const [password, setPassword] = useState(''); 
   const [size, setSize]= useState(10);
 
   function generatePass(){
-    alert(size)
+    let pass = '';
+    for(let i = 0, n = charset.length; i < size; i++){
+        pass += charset.charAt(Math.floor(Math.random() * n))
+    }
+    
+    setPassword(pass);
+  }
+
+  function copyPass(){
+    Clipboard.setString(password);
+    alert('Senha copiada com sucesso!');
   }
   
   return (
@@ -18,7 +34,8 @@ export default function App() {
         style={styles.logo}
       />
 
-      <Text style={styles.title}> 12 Caracteres</Text>
+      <Text style={styles.title}> {size} Caracteres</Text>
+     
 
       <View style={styles.area}>
         <Slider
@@ -28,7 +45,7 @@ export default function App() {
           minimumTrackTintColor="#FF0000"
           maximumTrackTintColor="#000"
           value={size}
-          onValueChange={(valor) => setSize(valor)}
+          onValueChange={(valor) => setSize(valor.toFixed(0))}
         />
       </View>
 
@@ -36,11 +53,13 @@ export default function App() {
         <Text style={styles.TextButtom}>GERAR SENHA</Text>
       </TouchableOpacity>
 
-      <View style={styles.area}>
-        <Text style={styles.password}> {password} </Text>
-      </View>
+      {password !== '' &&(
+        <View style={styles.area}>
+          <Text style={styles.password} onLongPress={copyPass}> {password}  <Icon name="copy" size={18} color="#999" />
+          </Text>
+        </View>
+      )}
 
-     
     </View>
   );
 }
@@ -86,5 +105,7 @@ const styles = StyleSheet.create({
     fontSize: 20,
     color: '#000',
     textAlign: 'center',
-  }
+  }, 
+  
+
 });
